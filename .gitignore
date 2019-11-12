@@ -1,0 +1,13 @@
+CMakeFiles/
+CMakeCache*
+Makefile
+cmake_install.cmake
+*.swl
+*.swm
+*.swn
+*.swo
+*.swp
+*.cpp~
+lib
+logs
+tags

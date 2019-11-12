@@ -1,3 +1,4 @@
+3rdparty/*
 CMakeFiles/
 CMakeCache*
 Makefile
@@ -11,3 +12,6 @@ cmake_install.cmake
 lib
 logs
 tags
+
+CLIENT
+SERVER

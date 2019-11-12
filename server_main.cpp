@@ -1,29 +1,19 @@
-#include <zmq.hpp>
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
+#include "ZeroMqUtils.hpp"
+#include <iostream>
 
 int main (void)
 {
   zmq::context_t context(1);
 
     printf ("Connecting to hello world server…\n");
-    zmq::socket_t sock (context, ZMQ_REQ);
-    sock.connect("ipc:///tmp/test");
+    zmq::socket_t socket (context, ZMQ_REQ);
+    socket.connect("ipc:///tmp/test");
 
-    int request_nbr;
-    for (request_nbr = 0; request_nbr != 10; request_nbr++) {
-      zmq::message_t request((void*)"Hello", 5, NULL);
-	//        zmq::msg_init_size (&request, 5);
-      //        memcpy (zmq::msg_data (&request), "Hello", 5);
-      printf ("Sending Hello %d…\n", request_nbr);
-      sock.send ( &request, 0);
-      //zmq::msg_close (&request);
-
-      zmq::message_t reply;
-      sock.recv ( &reply, 0);
-        printf ("Received World %d\n", request_nbr);
+    for (int request_nbr = 0; request_nbr != 10; request_nbr++) {
+       s_send(socket, "DUPAA");
+       std::string receivedMessage = s_recv(socket);
+       std::cout << request_nbr << " - Received Message: " << receivedMessage << std::endl;
     }
-    sock.close();
+    socket.close();
     return 0;
 }

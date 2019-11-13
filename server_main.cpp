@@ -2,7 +2,7 @@
 
 void singleRequestSingleReceive(int numberOfRequests)
 {
-   zmq::context_t context(1);
+   zmq::context_t context(NUM_OF_IO_THREADS);
    zmq::socket_t socket (context, zmq::socket_type::req);
    socket.connect(TCP_ADDRESS.data());
    for (int requestId = 0; requestId != numberOfRequests; requestId++) {

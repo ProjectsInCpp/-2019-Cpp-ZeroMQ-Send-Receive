@@ -2,6 +2,7 @@
 
 #include <zmq.hpp>
 #include <string>
+#include <iostream>
 
 static std::string s_recv (
         zmq::socket_t & socket, zmq::recv_flags flags = zmq::recv_flags::none)

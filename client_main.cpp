@@ -1,54 +1,38 @@
 #include "ZeroMqUtils.hpp"
-#include <iostream>
-#include <thread>
-
-int
-s_sendmore (void *socket, const char *string) {
-   int size = zmq_send (socket, string, strlen (string), ZMQ_SNDMORE);
-   return size;
-}
 
 void singleReceiveSingleRequest()
 {
-   zmq::context_t context (1);
-   std::cout << "1" << std::endl;
+   zmq::context_t context (NUM_OF_IO_THREADS);
    zmq::socket_t socket (context, zmq::socket_type::rep);
-   std::cout << "2" << std::endl;
-   socket.bind ("tcp://127.0.0.1:5555");
-   std::cout << "3" << std::endl;
+   socket.bind (TCP_ADDRESS.data());
    while (true) {
       std::string message = s_recv(socket);
-      std::cout << "Received Message: " << message << std::endl;
-      std::this_thread::sleep_for(std::chrono::seconds(1));
-      s_send(socket, "WorldOfDupa");
+      std::cout << "Received Message: " << message << '\n';
+      std::this_thread::sleep_for(std::chrono::seconds(MESSAGE_INTERVAL));
+      s_send(socket, MESSAGE_TO_RECEIVE.data());
    }
-
 }
 
 void publishSubscribe()
 {
-   zmq::context_t context (1);
-   std::cout << __func__ << "1" << std::endl;
-   zmq::socket_t socket (context, ZMQ_SUB);
-   std::cout << __func__ << "2" << std::endl;
-   socket.connect("ipc://test");
-
-   socket.setsockopt(ZMQ_SUBSCRIBE, "B", 1);
-
-   std::cout << __func__ << "3" << std::endl;
-   while (true) {
-      std::string receivedMessage = s_recv(socket);
-      std::cout << "Received message: " << receivedMessage << std::endl;
-      std::string receivedMessage_2 = s_recv(socket);
-      std::cout << "Received message_2: " << receivedMessage_2 << std::endl;
+   zmq::context_t context (NUM_OF_IO_THREADS);
+   zmq::socket_t socket (context, zmq::socket_type::sub);
+   socket.connect(IPC_ADDRESS.data());
+   socket.setsockopt(ZMQ_SUBSCRIBE, RECEIVER_ADDRESS.data(), IS_ON);
+   while (true)
+   {
+      std::string messageAddresser = s_recv(socket);
+      std::cout << "Message address: " << messageAddresser << '\n';
+      std::string fstMsgData = s_recv(socket);
+      std::cout << "First message data: " << fstMsgData << '\n';
+      std::string sndMsgData = s_recv(socket);
+      std::cout << "Second message data: " << sndMsgData << '\n' << '\n';
    }
 }
 
 int main ()
 {
-   std::cout << "Before everything" << std::endl;
 //   singleReceiveSingleRequest();
    publishSubscribe();
-   std::cout << "After everything" << std::endl;
    return 0;
 }

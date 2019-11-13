@@ -2,23 +2,23 @@
 
 void singleRequestSingleReceive(int numberOfRequests)
 {
-   zmq::context_t context(NUM_OF_IO_THREADS);
-   zmq::socket_t socket (context, zmq::socket_type::req);
+   zmq::context_t context{ NUM_OF_IO_THREADS };
+   zmq::socket_t socket{context, zmq::socket_type::req };
    socket.connect(TCP_ADDRESS.data());
    for (int requestId = 0; requestId != numberOfRequests; requestId++) {
       s_send(socket, MESSAGE_TO_SEND.data());
-      std::string receivedMessage = s_recv(socket);
+      std::string receivedMessage{ s_recv(socket) };
       std::cout << requestId << " - Received Message: " << receivedMessage << '\n';
    }
    socket.close();
 }
 
-void publishSubscribe()
+void publishSubscribe(int numberOfRequests)
 {
-   zmq::context_t context(1);
-   zmq::socket_t socket (context, zmq::socket_type::pub);
+   zmq::context_t context{ NUM_OF_IO_THREADS };
+   zmq::socket_t socket{ context, zmq::socket_type::pub };
    socket.bind(IPC_ADDRESS.data());
-   while(true)
+   for (int requestId = 0; requestId != numberOfRequests; requestId++)
    {
       s_send(socket, RECEIVER_ADDRESS.data(), zmq::send_flags::sndmore);
       s_send(socket, MESSAGE_TO_SEND.data(), zmq::send_flags::sndmore);
@@ -30,6 +30,6 @@ void publishSubscribe()
 int main (void)
 {
 //   singleRequestSingleReceive(10);
-   publishSubscribe();
+   publishSubscribe(10);
    return 0;
 }

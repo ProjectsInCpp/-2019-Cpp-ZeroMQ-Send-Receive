@@ -10,7 +10,7 @@ constexpr uint8_t MESSAGE_INTERVAL{ 1 };
 constexpr uint8_t NUM_OF_IO_THREADS{ 1 };
 std::string_view IPC_ADDRESS{ "ipc://test" };
 std::string_view TCP_ADDRESS{ "tcp://127.0.0.1:5555" };
-std::string_view RECEIVER_ADDRESS{ "B" };
+std::string_view RECEIVER_ADDRESS{ "test" };
 std::string_view MESSAGE_TO_SEND{ "My message to send" };
 std::string_view MESSAGE_TO_RECEIVE{ "My message to receive" };
 

@@ -6,7 +6,7 @@
 #include <string>
 
 constexpr uint8_t IS_ON{ 1 };
-constexpr uint8_t MESSAGE_INTERVAL{ 1 };
+constexpr uint8_t MESSAGE_INTERVAL{ 2 };
 constexpr uint8_t NUM_OF_IO_THREADS{ 1 };
 std::string_view IPC_ADDRESS{ "ipc://test" };
 std::string_view TCP_ADDRESS{ "tcp://127.0.0.1:5555" };

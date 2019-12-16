@@ -4,7 +4,7 @@ void singleReceiveSingleRequest()
 {
    std::cout << __func__ << "Start" << '\n';
    zmq::context_t context{ NUM_OF_IO_THREADS };
-   zmq::socket_t socket{context, zmq::socket_type::rep };
+   zmq::socket_t socket{ context, zmq::socket_type::rep };
    socket.bind (TCP_ADDRESS.data());
    while (true) {
       std::string message{ s_recv(socket) };
@@ -30,15 +30,13 @@ void publishSubscribe()
       std::cout << "Message address: " << messageAddresser << '\n';
       std::string fstMsgData{ s_recv(socket) };
       std::cout << "Message id: " << msgCount << " - First message data: " << fstMsgData << '\n';
-      std::string sndMsgData{ s_recv(socket) };
-      std::cout << "Message id: " << msgCount << " - Second message data: " << sndMsgData << '\n' << '\n';
    }
    std::cout << __func__ << "End" << '\n';
 }
 
 int main ()
 {
-//   singleReceiveSingleRequest();
+   //singleReceiveSingleRequest();
    publishSubscribe();
    return 0;
 }

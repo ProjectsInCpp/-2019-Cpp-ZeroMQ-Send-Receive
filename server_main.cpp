@@ -25,7 +25,6 @@ void publishSubscribe(int numberOfRequests)
    {
       std::cout << __func__ << "Publish msg: " << requestId+1 << '\n';
       s_send(socket, RECEIVER_ADDRESS.data(), zmq::send_flags::sndmore);
-      s_send(socket, MESSAGE_TO_SEND.data()+std::to_string(requestId), zmq::send_flags::sndmore);
       s_send(socket, MESSAGE_TO_SEND.data()+std::to_string(requestId));
       std::this_thread::sleep_for(std::chrono::seconds(MESSAGE_INTERVAL));
    }
